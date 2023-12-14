@@ -4,6 +4,7 @@ import 'package:neobis_android_chapter8/core/common_widgets/common_text_field.da
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 import 'package:neobis_android_chapter8/core/recources/app_images.dart';
+import 'package:neobis_android_chapter8/features/registration/presentation/screens/send_login_email_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -65,7 +66,10 @@ class _LoginScreenState extends State<LoginScreen> {
           obscureText: obscureText,
         ),
         const SizedBox(height: 82),
-        const CommonElevatedButton(title: 'Войти'),
+        CommonElevatedButton(
+          title: 'Войти',
+          onPressed: () {},
+        ),
       ],
     );
   }
@@ -75,7 +79,14 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Align(
         alignment: Alignment.bottomCenter,
         child: TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RegistrationScreen(),
+              ),
+            );
+          },
           child: Text(
             'Зарегистрироваться',
             style: AppFonts.s14w400.copyWith(color: AppColors.violet),
