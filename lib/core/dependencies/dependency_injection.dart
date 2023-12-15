@@ -1,5 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:neobis_android_chapter8/core/services/dio_settings.dart';
+import 'package:neobis_android_chapter8/features/favourite_items/data/data_source/remote_data_source.dart';
+import 'package:neobis_android_chapter8/features/favourite_items/data/repository_impl/items_repository_impl.dart';
+import 'package:neobis_android_chapter8/features/favourite_items/domain/usecase/items_use_case.dart';
 import 'package:neobis_android_chapter8/features/login/data/data_source/remote_data_source.dart';
 import 'package:neobis_android_chapter8/features/login/data/repositories/login_repo_impl.dart';
 import 'package:neobis_android_chapter8/features/login/domain/usecases/login_usecase.dart';
@@ -37,6 +40,21 @@ void setupDependecies() {
   getIt.registerSingleton<RegistrationUseCase>(
     RegistrationUseCase(
       repository: getIt<RegistrationRepositoryImpl>(),
+    ),
+  );
+  getIt.registerSingleton<ItemsDataSoruceImpl>(
+    ItemsDataSoruceImpl(
+      dio: getIt<DioSettings>().dio,
+    ),
+  );
+  getIt.registerSingleton<ItemsRepositoryImpl>(
+    ItemsRepositoryImpl(
+      dataSource: getIt<ItemsDataSoruceImpl>(),
+    ),
+  );
+  getIt.registerSingleton<ItemsUseCase>(
+    ItemsUseCase(
+      repository: getIt<ItemsRepositoryImpl>(),
     ),
   );
 }

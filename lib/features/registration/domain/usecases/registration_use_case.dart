@@ -1,4 +1,3 @@
-import 'package:neobis_android_chapter8/features/login/domain/repo/login_repository.dart';
 import 'package:neobis_android_chapter8/features/registration/domain/repo/register_repo.dart';
 
 class RegistrationUseCase {

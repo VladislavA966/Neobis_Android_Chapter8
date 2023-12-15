@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:neobis_android_chapter8/core/common_widgets/bottom_navigation_bar.dart';
 import 'package:neobis_android_chapter8/core/dependencies/dependency_injection.dart';
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/features/login/domain/usecases/login_usecase.dart';
@@ -29,10 +28,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: ThemeData(
-         
           scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
         ),
-        home: const BottomBarNavigation(),
+        home: const LoginScreen(),
       ),
     );
   }

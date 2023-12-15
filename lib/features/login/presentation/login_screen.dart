@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:neobis_android_chapter8/core/common_widgets/bottom_navigation_bar.dart';
 import 'package:neobis_android_chapter8/core/common_widgets/common_elevated_button.dart';
 import 'package:neobis_android_chapter8/core/common_widgets/common_text_field.dart';
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 import 'package:neobis_android_chapter8/core/recources/app_images.dart';
 import 'package:neobis_android_chapter8/features/login/presentation/bloc/log_in_bloc.dart';
-import 'package:neobis_android_chapter8/features/registration/presentation/screens/send_login_email_screen.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/user_profile_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -89,9 +90,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<LogInBloc, LogInState>(
       listener: (context, state) {
         if (state is LogInLoaded) {
-          print(state);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const UserProfileScrreen(),
+            ),
+          );
         } else if (state is LogInError) {
-          print(state);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Неверный логин или пароль'),
@@ -122,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const RegistrationScreen(),
+                builder: (context) => const BottomBarNavigation(),
               ),
             );
           },

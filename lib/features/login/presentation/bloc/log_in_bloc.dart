@@ -7,21 +7,18 @@ part 'log_in_state.dart';
 
 class LogInBloc extends Bloc<LogInEvent, LogInState> {
   final LogInUseCase useCase;
+
   LogInBloc({required this.useCase}) : super(LogInInitial()) {
-    on<SendLoginData>((event, emit) {
-      emit(LogInLoading());
-      try {
-        useCase.call(event.logIn, event.password);
-        emit(
-          LogInLoaded(),
-        );
-      } catch (e) {
-        emit(
-          LogInError(
-            errorText: e.toString(),
-          ),
-        );
-      }
-    });
+    on<SendLoginData>(_onSendLoginData);
+  }
+
+  Future<void> _onSendLoginData(SendLoginData event, Emitter<LogInState> emit) async {
+    emit(LogInLoading());
+    try {
+      await useCase.call(event.logIn, event.password);
+      emit(LogInLoaded());
+    } catch (e) {
+      emit(LogInError(errorText: e.toString()));
+    }
   }
 }
