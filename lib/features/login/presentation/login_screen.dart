@@ -54,50 +54,62 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildLoginFields() {
     return Column(
       children: [
-        CommonTextField(
-          controller: loginController,
-          title: 'Имя пользователя',
-          obscureText: false,
-        ),
+        _usernameField(),
         const SizedBox(height: 51),
-        CommonTextField(
-          controller: passwordController,
-          title: 'Пароль',
-          suffix: IconButton(
-            icon: obscureText
-                ? Image.asset(AppImages.showText)
-                : Image.asset(AppImages.hideText),
-            onPressed: () => setState(() => obscureText = !obscureText),
-          ),
-          obscureText: obscureText,
-        ),
+        _passwordField(),
         const SizedBox(height: 82),
-        BlocListener<LogInBloc, LogInState>(
-          listener: (context, state) {
-            if (state is LogInLoaded) {
-              print(state);
-            } else if (state is LogInError) {
-              print(state);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Неверный логин или пароль'),
-                  behavior: SnackBarBehavior.floating,
-                  margin: EdgeInsets.all(20),
-                ),
-              );
-            }
-          },
-          child: CommonElevatedButton(
-            title: 'Войти',
-            onPressed: () {
-              BlocProvider.of<LogInBloc>(context).add(SendLoginData(
-                logIn: loginController.text,
-                password: passwordController.text,
-              ));
-            },
-          ),
-        ),
+        _loginButton(),
       ],
+    );
+  }
+
+  Widget _usernameField() {
+    return CommonTextField(
+      controller: loginController,
+      title: 'Имя пользователя',
+      obscureText: false,
+    );
+  }
+
+  Widget _passwordField() {
+    return CommonTextField(
+      controller: passwordController,
+      title: 'Пароль',
+      suffix: IconButton(
+        icon: obscureText
+            ? Image.asset(AppImages.showText)
+            : Image.asset(AppImages.hideText),
+        onPressed: () => setState(() => obscureText = !obscureText),
+      ),
+      obscureText: obscureText,
+    );
+  }
+
+  Widget _loginButton() {
+    return BlocListener<LogInBloc, LogInState>(
+      listener: (context, state) {
+        if (state is LogInLoaded) {
+          print(state);
+        } else if (state is LogInError) {
+          print(state);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Неверный логин или пароль'),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.all(20),
+            ),
+          );
+        }
+      },
+      child: CommonElevatedButton(
+        title: 'Войти',
+        onPressed: () {
+          BlocProvider.of<LogInBloc>(context).add(SendLoginData(
+            logIn: loginController.text,
+            password: passwordController.text,
+          ));
+        },
+      ),
     );
   }
 
