@@ -10,6 +10,7 @@ class DioSettings {
 
   Dio dio = Dio(
     BaseOptions(
+      baseUrl: 'https://mobi-market.up.railway.app',
       contentType: "application/json",
       headers: {
         "Accept": "application/json",

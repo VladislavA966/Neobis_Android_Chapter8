@@ -13,7 +13,7 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
       try {
         useCase.call(event.logIn, event.password);
         emit(
-          LogInLoading(),
+          LogInLoaded(),
         );
       } catch (e) {
         emit(

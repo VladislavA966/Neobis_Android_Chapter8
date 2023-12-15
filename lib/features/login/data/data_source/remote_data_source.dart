@@ -10,6 +10,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   RemoteDataSourceImpl({required this.dio});
   @override
   Future<void> logIn(String login, String password) async {
-    await dio.post('/login/', data: {"login": login, "password": password});
+    await dio.post('/api/auth/sign-in', data: {"username": login, "password": password});
   }
 }

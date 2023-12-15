@@ -14,6 +14,8 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,12 +52,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(
                 height: 68,
               ),
-              const CommonTextField(
-                  title: 'Имя пользователя', obscureText: false),
+              CommonTextField(
+                  controller: usernameController,
+                  title: 'Имя пользователя',
+                  obscureText: false),
               const SizedBox(
                 height: 52,
               ),
-              const CommonTextField(
+              CommonTextField(
+                controller: emailController,
                 title: 'Почта',
                 obscureText: false,
               ),
@@ -68,7 +73,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CreatePasswordScreen(),
+                      builder: (context) => CreatePasswordScreen(
+                        userName: usernameController.text,
+                        email: emailController.text,
+                      ),
                     ),
                   );
                 },

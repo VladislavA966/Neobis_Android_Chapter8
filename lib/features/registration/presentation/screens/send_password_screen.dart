@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:neobis_android_chapter8/core/common_widgets/common_elevated_button.dart';
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 import 'package:neobis_android_chapter8/core/recources/app_images.dart';
+import 'package:neobis_android_chapter8/features/registration/presentation/bloc/registration_bloc.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/user_profile_screen.dart';
 
 class CreatePasswordScreen extends StatefulWidget {
-  const CreatePasswordScreen({super.key});
+  final String userName;
+  final String email;
+  const CreatePasswordScreen(
+      {super.key, required this.userName, required this.email});
 
   @override
   State<CreatePasswordScreen> createState() => _CreatePasswordScreenState();
@@ -14,10 +20,8 @@ class CreatePasswordScreen extends StatefulWidget {
 class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
   final FocusNode _focusNodeFirst = FocusNode();
   final FocusNode _focusNodeSecond = FocusNode();
-  final TextEditingController _firstPasswordController =
-      TextEditingController();
-  final TextEditingController _secondPasswordController =
-      TextEditingController();
+  final _firstPasswordController = TextEditingController();
+  final _secondPasswordController = TextEditingController();
 
   bool _isButtonEnabled = false;
   bool _obscureText = true;
@@ -58,7 +62,12 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
     if (_focusNodeFirst.hasFocus) {
       FocusScope.of(context).requestFocus(_focusNodeSecond);
     } else if (_focusNodeSecond.hasFocus) {
-      print('Action after second field filled');
+      BlocProvider.of<RegistrationBloc>(context).add(
+        GetRegistrationEvent(
+            userName: widget.userName,
+            password: _firstPasswordController.text,
+            email: widget.email),
+      );
     }
   }
 
@@ -80,7 +89,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
             child: InkWell(
               onTap: () {
                 setState(() {
-                  _obscureText =! _obscureText;
+                  _obscureText = !_obscureText;
                 });
               },
               child: Image.asset(
@@ -154,9 +163,28 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
                 autofocus: false,
               ),
               const SizedBox(height: 49),
-              CommonElevatedButton(
-                title: 'Далее',
-                onPressed: _isButtonEnabled ? _onButtonPressed : null,
+              BlocListener<RegistrationBloc, RegistrationState>(
+                listener: (context, state) {
+                  if (state is RegistrationLoaded) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const UserProfileScrreen(),
+                      ),
+                    );
+                  } else if (state is RegistrationError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content:
+                            Text('Пользователь с таким именем уже существует'),
+                      ),
+                    );
+                  }
+                },
+                child: CommonElevatedButton(
+                  title: 'Далее',
+                  onPressed: _isButtonEnabled ? _onButtonPressed : null,
+                ),
               ),
             ],
           ),

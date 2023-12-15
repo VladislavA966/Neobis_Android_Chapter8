@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 import 'package:neobis_android_chapter8/core/recources/app_images.dart';
+import 'package:neobis_android_chapter8/features/favourite_items/presentation/favourite_items_list.dart';
 
 class UserProfileScrreen extends StatefulWidget {
   const UserProfileScrreen({super.key});
@@ -53,7 +54,14 @@ class _UserProfileScrreenState extends State<UserProfileScrreen> {
                 height: 24,
               ),
               UserProfileContainer(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FavoutiteItemsScreen(),
+                    ),
+                  );
+                },
                 title: 'Понравившиеся',
                 image: AppImages.hearth,
               ),
