@@ -64,24 +64,28 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          color: AppColors.black,
-          onPressed: () => Navigator.pop(context),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
-            onPressed: () => setState(() => _obscureText = !_obscureText),
-          ),
-        ],
-        title: Text('Регистрация',
-            style: AppFonts.s18w700.copyWith(color: AppColors.black)),
-        backgroundColor: AppColors.white,
-        elevation: 0,
-      ),
+      appBar: _buildAppBar(context),
       body: _buildBody(),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios),
+        color: AppColors.black,
+        onPressed: () => Navigator.pop(context),
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
+          onPressed: () => setState(() => _obscureText = !_obscureText),
+        ),
+      ],
+      title: Text('Регистрация',
+          style: AppFonts.s18w700.copyWith(color: AppColors.black)),
+      backgroundColor: AppColors.scaffoldBackgroundColor,
+      elevation: 0,
     );
   }
 

@@ -36,7 +36,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         'Регистрация',
         style: AppFonts.s18w700.copyWith(color: AppColors.black),
       ),
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.scaffoldBackgroundColor,
       elevation: 0,
     );
   }

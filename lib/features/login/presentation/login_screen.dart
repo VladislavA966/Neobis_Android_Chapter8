@@ -7,6 +7,7 @@ import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 import 'package:neobis_android_chapter8/core/recources/app_images.dart';
 import 'package:neobis_android_chapter8/features/login/presentation/bloc/log_in_bloc.dart';
+import 'package:neobis_android_chapter8/features/registration/presentation/screens/send_login_email_screen.dart';
 import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/user_profile_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -93,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const UserProfileScrreen(),
+              builder: (context) => const BottomBarNavigation(),
             ),
           );
         } else if (state is LogInError) {
@@ -127,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const BottomBarNavigation(),
+                builder: (context) => const RegistrationScreen(),
               ),
             );
           },
