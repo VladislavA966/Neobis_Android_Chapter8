@@ -8,7 +8,6 @@ import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 import 'package:neobis_android_chapter8/core/recources/app_images.dart';
 import 'package:neobis_android_chapter8/features/login/presentation/bloc/log_in_bloc.dart';
 import 'package:neobis_android_chapter8/features/registration/presentation/screens/send_login_email_screen.dart';
-import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/user_profile_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

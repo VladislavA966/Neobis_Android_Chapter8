@@ -11,7 +11,6 @@ import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presen
 class CreatePasswordScreen extends StatefulWidget {
   final String userName;
   final String email;
-
   const CreatePasswordScreen(
       {super.key, required this.userName, required this.email});
 
@@ -20,10 +19,10 @@ class CreatePasswordScreen extends StatefulWidget {
 }
 
 class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
-  final _firstPasswordController = TextEditingController();
-  final _secondPasswordController = TextEditingController();
   final FocusNode _focusNodeFirst = FocusNode();
   final FocusNode _focusNodeSecond = FocusNode();
+  final _firstPasswordController = TextEditingController();
+  final _secondPasswordController = TextEditingController();
 
   bool _isButtonEnabled = false;
   bool _obscureText = true;
@@ -35,141 +34,190 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
     _secondPasswordController.addListener(_updateButtonState);
   }
 
-  @override
-  void dispose() {
-    _firstPasswordController.dispose();
-    _secondPasswordController.dispose();
-    _focusNodeFirst.dispose();
-    _focusNodeSecond.dispose();
-    super.dispose();
-  }
-
   void _updateButtonState() {
-    setState(() {
-      _isButtonEnabled = _firstPasswordController.text.isNotEmpty &&
-          _secondPasswordController.text.isNotEmpty &&
-          _firstPasswordController.text == _secondPasswordController.text;
-    });
+    if (_focusNodeFirst.hasFocus &&
+        _firstPasswordController.text.isNotEmpty &&
+        _firstPasswordController.text.contains(
+          RegExp(r'[a-zA-Z]'),
+        ) &&
+        _firstPasswordController.text.contains(
+          RegExp(r'[0-9]'),
+        )) {
+      setState(() {
+        _isButtonEnabled = true;
+      });
+    } else if (_focusNodeSecond.hasFocus &&
+        _secondPasswordController.text.isNotEmpty &&
+        _secondPasswordController.text == _firstPasswordController.text) {
+      setState(() {
+        _isButtonEnabled = true;
+      });
+    } else {
+      setState(() {
+        _isButtonEnabled = false;
+      });
+    }
   }
 
   void _onButtonPressed() {
-    BlocProvider.of<RegistrationBloc>(context).add(
-      GetRegistrationEvent(
-          userName: widget.userName,
-          password: _firstPasswordController.text,
-          email: widget.email),
-    );
+    if (_focusNodeFirst.hasFocus) {
+      FocusScope.of(context).requestFocus(_focusNodeSecond);
+    } else if (_focusNodeSecond.hasFocus) {
+      BlocProvider.of<RegistrationBloc>(context).add(
+        GetRegistrationEvent(
+            userName: widget.userName,
+            password: _firstPasswordController.text,
+            email: widget.email),
+      );
+    }
   }
 
   @override
+  void dispose() {
+    _focusNodeFirst.dispose();
+    _focusNodeSecond.dispose();
+    _firstPasswordController.dispose();
+    _secondPasswordController.dispose();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: _buildBody(),
-    );
-  }
-
-  AppBar _buildAppBar(BuildContext context) {
-    return AppBar(
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios),
-        color: AppColors.black,
-        onPressed: () => Navigator.pop(context),
-      ),
-      actions: [
-        IconButton(
-          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
-          onPressed: () => setState(() => _obscureText = !_obscureText),
-        ),
-      ],
-      title: Text('Регистрация',
-          style: AppFonts.s18w700.copyWith(color: AppColors.black)),
-      backgroundColor: AppColors.scaffoldBackgroundColor,
-      elevation: 0,
-    );
-  }
-
-  Widget _buildBody() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const SizedBox(height: 32),
-            _buildLogoSection(),
-            const SizedBox(height: 28),
-            _buildInstructionsText(),
-            _buildPasswordFields(),
-            const SizedBox(height: 49),
-            _buildNextButton(),
-          ],
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 32,
+              ),
+              _buildImage(),
+              const SizedBox(
+                height: 28,
+              ),
+              _buildText(),
+              _buildValidationText(),
+              _buildPasswordField(),
+              _buildConfirmPasswordField(),
+              const SizedBox(height: 49),
+              _buildNextButton(),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildLogoSection() {
+  Text _buildValidationText() {
+    return Text(
+      'Минимальная длина — 8 символов.\nДля надежности пароль должен\nсодержать буквы и цифры.',
+      textAlign: TextAlign.center,
+      style: AppFonts.s16w400.copyWith(
+        color: AppColors.grey,
+      ),
+    );
+  }
+
+  Text _buildText() {
+    return Text(
+      'Придумате пароль',
+      style: AppFonts.s20w400.copyWith(color: AppColors.grey49),
+    );
+  }
+
+  Container _buildImage() {
     return Container(
       width: 80,
       height: 80,
       decoration: BoxDecoration(
-        image: const DecorationImage(image: AssetImage(AppImages.lock)),
+        image: const DecorationImage(
+          image: AssetImage(
+            AppImages.lock,
+          ),
+        ),
         color: AppColors.violet,
+        shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(20),
       ),
     );
   }
 
-  Widget _buildInstructionsText() {
-    return Column(
-      children: [
-        Text('Придумате пароль',
-            style: AppFonts.s20w400.copyWith(color: AppColors.grey49)),
-        Text(
-          'Минимальная длина — 8 символов.\nДля надежности пароль должен содержать буквы и цифры.',
-          textAlign: TextAlign.center,
-          style: AppFonts.s16w400.copyWith(color: AppColors.grey),
-        ),
-      ],
+  PasswordTextField _buildConfirmPasswordField() {
+    return PasswordTextField(
+      obscureText: _obscureText,
+      controller: _secondPasswordController,
+      focusNode: _focusNodeSecond,
+      autofocus: false,
     );
   }
 
-  Widget _buildPasswordFields() {
-    return Column(
-      children: [
-        PasswordTextField(
-          obscureText: _obscureText,
-          controller: _firstPasswordController,
-          focusNode: _focusNodeFirst,
-          autofocus: true,
-        ),
-        PasswordTextField(
-          obscureText: _obscureText,
-          controller: _secondPasswordController,
-          focusNode: _focusNodeSecond,
-          autofocus: false,
-        ),
-      ],
+  PasswordTextField _buildPasswordField() {
+    return PasswordTextField(
+      obscureText: _obscureText,
+      controller: _firstPasswordController,
+      focusNode: _focusNodeFirst,
+      autofocus: true,
     );
   }
 
-  Widget _buildNextButton() {
+  BlocListener<RegistrationBloc, RegistrationState> _buildNextButton() {
     return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
         if (state is RegistrationLoaded) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const UserProfileScrreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const UserProfileScrreen(),
+            ),
+          );
         } else if (state is RegistrationError) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Пользователь с таким именем уже существует')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Пользователь с таким именем уже существует'),
+            ),
+          );
         }
       },
       child: CommonElevatedButton(
         title: 'Далее',
         onPressed: _isButtonEnabled ? _onButtonPressed : null,
       ),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            },
+            child: Image.asset(
+              AppImages.hideText,
+            ),
+          ),
+        ),
+      ],
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios),
+        color: AppColors.black,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      title: Text(
+        'Регистрация',
+        style: AppFonts.s18w700.copyWith(
+          color: AppColors.black,
+        ),
+      ),
+      backgroundColor: AppColors.scaffoldBackgroundColor,
+      elevation: 0,
     );
   }
 }
