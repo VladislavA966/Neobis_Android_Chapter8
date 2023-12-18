@@ -119,11 +119,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       style: AppFonts.s16w400.copyWith(color: AppColors.violet),
                     ),
                   ),
+                const SizedBox(
+                  height: 20,
+                ),
                 CommonElevatedButton(
                   title: 'Отправить код',
-                  onPressed: codeController.text.isEmpty ? null : () {
-                    
-                  },
+                  onPressed: codeController.text.isEmpty ? null : () {},
                 ),
               ],
             ),
