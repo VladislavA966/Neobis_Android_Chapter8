@@ -9,7 +9,7 @@ class RemoteDataSourceRegistrationImpl implements RemoteDataSourceRegistration {
 
   RemoteDataSourceRegistrationImpl({required this.dio});
   @override
-  Future<void> registration(String login, String email, String password) async {
+  Future<void> registration(String email, String login, String password) async {
     await dio.post('/api/auth/sign-up',
         data: {"email": email, "password": password, "username": login});
   }

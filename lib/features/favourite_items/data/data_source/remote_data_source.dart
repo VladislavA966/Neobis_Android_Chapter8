@@ -15,7 +15,7 @@ class ItemsDataSoruceImpl implements ItemsDataSource {
     if (responce.statusCode == 200) {
       return ItemsModelList.fromJson(responce.data);
     } else {
-      throw UnimplementedError();
+      throw Error();
     }
   }
 }

@@ -92,7 +92,9 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
               const SizedBox(
                 height: 32,
               ),
-              _buildImage(),
+              const ImageContainer(
+                image: AppImages.lock,
+              ),
               const SizedBox(
                 height: 28,
               ),
@@ -123,23 +125,6 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
     return Text(
       'Придумате пароль',
       style: AppFonts.s20w400.copyWith(color: AppColors.grey49),
-    );
-  }
-
-  Container _buildImage() {
-    return Container(
-      width: 80,
-      height: 80,
-      decoration: BoxDecoration(
-        image: const DecorationImage(
-          image: AssetImage(
-            AppImages.lock,
-          ),
-        ),
-        color: AppColors.violet,
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(20),
-      ),
     );
   }
 
@@ -218,6 +203,32 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
       ),
       backgroundColor: AppColors.scaffoldBackgroundColor,
       elevation: 0,
+    );
+  }
+}
+
+class ImageContainer extends StatelessWidget {
+  final String image;
+  const ImageContainer({
+    super.key,
+    required this.image,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 80,
+      height: 80,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+            image,
+          ),
+        ),
+        color: AppColors.violet,
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(20),
+      ),
     );
   }
 }
