@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:neobis_android_chapter8/core/common_widgets/bottom_navigation_bar.dart';
 import 'package:neobis_android_chapter8/core/common_widgets/common_elevated_button.dart';
 import 'package:neobis_android_chapter8/core/common_widgets/common_text_field.dart';
@@ -17,9 +18,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool isButtonActive = false;
+
   final loginController = TextEditingController();
   final passwordController = TextEditingController();
   bool obscureText = true;
+
+  void _updateButtonState() {
+    setState(() {
+      isButtonActive =
+          loginController.text.isNotEmpty && passwordController.text.isNotEmpty;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _usernameField() {
     return CommonTextField(
+      onChanged: (value) {
+        _updateButtonState();
+      },
       controller: loginController,
       title: 'Имя пользователя',
       obscureText: false,
@@ -74,6 +87,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _passwordField() {
     return CommonTextField(
+      onChanged: (value) {
+        _updateButtonState();
+      },
       controller: passwordController,
       title: 'Пароль',
       suffix: IconButton(
@@ -97,23 +113,29 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           );
         } else if (state is LogInError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Неверный логин или пароль'),
-              behavior: SnackBarBehavior.floating,
-              margin: EdgeInsets.all(20),
-            ),
+          Fluttertoast.showToast(
+            msg: "Неверный логин или пароль",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
           );
         }
       },
       child: CommonElevatedButton(
         title: 'Войти',
-        onPressed: () {
-          BlocProvider.of<LogInBloc>(context).add(SendLoginData(
-            logIn: loginController.text,
-            password: passwordController.text,
-          ));
-        },
+        onPressed: isButtonActive
+            ? () {
+                BlocProvider.of<LogInBloc>(context).add(
+                  SendLoginData(
+                    logIn: loginController.text,
+                    password: passwordController.text,
+                  ),
+                );
+              }
+            : null,
       ),
     );
   }

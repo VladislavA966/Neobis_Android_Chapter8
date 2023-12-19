@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:neobis_android_chapter8/core/common_widgets/bottom_navigation_bar.dart';
 import 'package:neobis_android_chapter8/core/dependencies/dependency_injection.dart';
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
-import 'package:neobis_android_chapter8/features/confirm_phone_number/presentation/screens/confirm_phone_number.dart';
-import 'package:neobis_android_chapter8/features/confirm_phone_number/presentation/screens/verification_screen.dart';
 import 'package:neobis_android_chapter8/features/login/domain/usecases/login_usecase.dart';
 import 'package:neobis_android_chapter8/features/login/presentation/bloc/log_in_bloc.dart';
 import 'package:neobis_android_chapter8/features/login/presentation/login_screen.dart';
 import 'package:neobis_android_chapter8/features/registration/domain/usecases/registration_use_case.dart';
 import 'package:neobis_android_chapter8/features/registration/presentation/bloc/registration_bloc.dart';
-import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/user_profile_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -21,7 +17,7 @@ class MyApp extends StatelessWidget {
       providers: _buildBlocProviders(),
       child: MaterialApp(
         theme: _buildAppTheme(),
-        home: const VerificationScreen(),
+        home: const LoginScreen(),
       ),
     );
   }

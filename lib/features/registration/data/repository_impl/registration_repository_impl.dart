@@ -6,7 +6,11 @@ class RegistrationRepositoryImpl implements RegistrationRepo {
 
   RegistrationRepositoryImpl({required this.dataSourceRegistration});
   @override
-  Future<void> registration(String login, String email, String password) async {
-    await dataSourceRegistration.registration(login, email, password);
+  Future<void> registration(
+    String email,
+    String password,
+    String login,
+  ) async {
+    await dataSourceRegistration.registration(email, login, password);
   }
 }

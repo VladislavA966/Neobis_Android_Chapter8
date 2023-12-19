@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:neobis_android_chapter8/features/registration/domain/usecases/registration_use_case.dart';
-
 part 'registration_event.dart';
 part 'registration_state.dart';
 

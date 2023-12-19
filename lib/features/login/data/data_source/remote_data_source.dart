@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:neobis_android_chapter8/features/login/data/models/token_model.dart';
 
 abstract class RemoteDataSource {
-  Future<void> logIn(String name, String password);
+  Future<TokenModel> logIn(String name, String password);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -9,7 +10,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   RemoteDataSourceImpl({required this.dio});
   @override
-  Future<void> logIn(String login, String password) async {
-    await dio.post('/api/auth/sign-in', data: {"username": login, "password": password});
+  Future<TokenModel> logIn(String login, String password) async {
+    final responce = await dio.post('/api/auth/sign-in',
+        data: {"username": login, "password": password});
+    return TokenModel.fromJson(responce.data);
   }
 }

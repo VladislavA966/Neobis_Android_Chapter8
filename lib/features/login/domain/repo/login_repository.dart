@@ -1,3 +1,5 @@
+import 'package:neobis_android_chapter8/features/login/domain/entities/token_entity.dart';
+
 abstract class LogInRepo {
-  Future<void> logIn(String login, String password);
+  Future<TokenEntity> logIn(String login, String password);
 }

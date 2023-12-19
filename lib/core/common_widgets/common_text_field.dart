@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CommonTextField extends StatelessWidget {
+  final Function(String)? onChanged;
   final TextEditingController controller;
   final Function()? onTapIcon;
   final String title;
@@ -11,11 +12,14 @@ class CommonTextField extends StatelessWidget {
       required this.title,
       this.suffix,
       required this.obscureText,
-      this.onTapIcon, required this.controller});
+      this.onTapIcon,
+      required this.controller,
+      this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: onChanged,
       controller: controller,
       obscuringCharacter: '*',
       obscureText: obscureText,

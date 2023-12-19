@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:neobis_android_chapter8/core/common_widgets/bottom_navigation_bar.dart';
 import 'package:neobis_android_chapter8/core/common_widgets/common_elevated_button.dart';
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
@@ -81,6 +82,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
@@ -153,7 +155,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const UserProfileScrreen(),
+              builder: (context) => const BottomBarNavigation(),
             ),
           );
         } else if (state is RegistrationError) {

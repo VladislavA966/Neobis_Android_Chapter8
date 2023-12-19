@@ -5,6 +5,6 @@ class RegistrationUseCase {
 
   RegistrationUseCase({required this.repository});
   Future<void> call(String logIn, String email, String password) async {
-    await repository.registration(logIn, email, password);
+    await repository.registration(email, logIn, password);
   }
 }
