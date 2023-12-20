@@ -13,6 +13,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<TokenModel> logIn(String login, String password) async {
     final responce = await dio.post('/api/auth/sign-in',
         data: {"username": login, "password": password});
-    return TokenModel.fromJson(responce.data);
+    if (responce.statusCode == 200) {
+      return TokenModel.fromJson(responce.data);
+    } else {
+      (throw Exception(),);
+    }
   }
 }

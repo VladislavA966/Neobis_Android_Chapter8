@@ -3,9 +3,13 @@ import 'package:neobis_android_chapter8/core/services/dio_settings.dart';
 import 'package:neobis_android_chapter8/features/add_user_data_screen/data/data_sources/add_user_data_data_source.dart';
 import 'package:neobis_android_chapter8/features/add_user_data_screen/data/repository_impl/add_user_data_repository_impl.dart';
 import 'package:neobis_android_chapter8/features/add_user_data_screen/domain/usecases/add_user_data_use_case.dart';
+import 'package:neobis_android_chapter8/features/confirm_phone_number/data/data_sources/remote_data_source.dart';
+import 'package:neobis_android_chapter8/features/confirm_phone_number/data/repository_impl/confirm_phone_repository_impl.dart';
+import 'package:neobis_android_chapter8/features/confirm_phone_number/domain/use_cases/confirm_phone_usecase.dart';
 import 'package:neobis_android_chapter8/features/favourite_items/data/data_source/remote_data_source.dart';
 import 'package:neobis_android_chapter8/features/favourite_items/data/repository_impl/items_repository_impl.dart';
 import 'package:neobis_android_chapter8/features/favourite_items/domain/usecase/items_use_case.dart';
+import 'package:neobis_android_chapter8/features/login/data/data_source/local_data_source.dart';
 import 'package:neobis_android_chapter8/features/login/data/data_source/remote_data_source.dart';
 import 'package:neobis_android_chapter8/features/login/data/repositories/login_repo_impl.dart';
 import 'package:neobis_android_chapter8/features/login/domain/usecases/login_usecase.dart';
@@ -20,6 +24,22 @@ void setupDependecies() {
   registrationDependencies();
   favouriteItemsDependencies();
   updateUserDataDependencies();
+  getIt.registerSingleton<ConfirmPhoneRemoteDataSourceImpl>(
+    ConfirmPhoneRemoteDataSourceImpl(dio: getIt<DioSettings>().dio),
+  );
+  getIt.registerSingleton<LocalDataSource>(
+    LocalDataSource(),
+  );
+  getIt.registerSingleton<ConfirmPhoneNumberImpl>(
+    ConfirmPhoneNumberImpl(
+      dataSource: getIt<ConfirmPhoneRemoteDataSourceImpl>(),
+    ),
+  );
+  getIt.registerSingleton<ConfirmPhoneUseCase>(
+    ConfirmPhoneUseCase(
+      repo: getIt<ConfirmPhoneNumberImpl>(),
+    ),
+  );
 }
 
 void updateUserDataDependencies() {
@@ -59,7 +79,7 @@ void favouriteItemsDependencies() {
 }
 
 void registrationDependencies() {
-   getIt.registerSingleton<RemoteDataSourceRegistrationImpl>(
+  getIt.registerSingleton<RemoteDataSourceRegistrationImpl>(
     RemoteDataSourceRegistrationImpl(
       dio: getIt<DioSettings>().dio,
     ),

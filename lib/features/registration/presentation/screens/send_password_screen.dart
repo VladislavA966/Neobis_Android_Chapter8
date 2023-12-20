@@ -5,15 +5,14 @@ import 'package:neobis_android_chapter8/core/common_widgets/common_elevated_butt
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 import 'package:neobis_android_chapter8/core/recources/app_images.dart';
+import 'package:neobis_android_chapter8/features/login/presentation/login_screen.dart';
 import 'package:neobis_android_chapter8/features/registration/presentation/bloc/registration_bloc.dart';
 import 'package:neobis_android_chapter8/features/registration/presentation/common_widgets/password_text_field.dart';
-import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/user_profile_screen.dart';
 
 class CreatePasswordScreen extends StatefulWidget {
-  final String userName;
-  final String email;
-  const CreatePasswordScreen(
-      {super.key, required this.userName, required this.email});
+  final String? userName;
+  final String? email;
+  const CreatePasswordScreen({super.key, this.userName, this.email});
 
   @override
   State<CreatePasswordScreen> createState() => _CreatePasswordScreenState();
@@ -66,9 +65,9 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
     } else if (_focusNodeSecond.hasFocus) {
       BlocProvider.of<RegistrationBloc>(context).add(
         GetRegistrationEvent(
-            userName: widget.userName,
+            userName: widget.userName ?? '',
             password: _firstPasswordController.text,
-            email: widget.email),
+            email: widget.email ?? ''),
       );
     }
   }
@@ -155,7 +154,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const BottomBarNavigation(),
+              builder: (context) => const LoginScreen(),
             ),
           );
         } else if (state is RegistrationError) {
