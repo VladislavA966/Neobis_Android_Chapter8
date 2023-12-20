@@ -20,7 +20,6 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
     emit(LogInLoading());
     try {
       final responce = await useCase.call(event.logIn, event.password);
-      print(responce.username);
       localDataSource.saveUsername(responce.username);
       emit(
         LogInLoaded(),

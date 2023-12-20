@@ -16,7 +16,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     if (responce.statusCode == 200) {
       return TokenModel.fromJson(responce.data);
     } else {
-      (throw Exception(),);
+      throw Exception();
     }
   }
 }

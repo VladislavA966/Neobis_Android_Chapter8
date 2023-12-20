@@ -19,6 +19,13 @@ class ConfirmPhoneNumber extends StatefulWidget {
 
 class _ConfirmPhoneNumberState extends State<ConfirmPhoneNumber> {
   final _phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,78 +34,80 @@ class _ConfirmPhoneNumberState extends State<ConfirmPhoneNumber> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-          ),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 32,
-              ),
-              const ImageContainer(
-                image: AppImages.lock,
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              Text(
-                'Введите номер телефона',
-                style: AppFonts.s20w400.copyWith(
-                  color: AppColors.grey49,
-                ),
-              ),
-              Text(
-                'Мы отправили вам СМС с кодом\nподтверждения',
-                style: AppFonts.s16w400.copyWith(color: AppColors.grey),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              PasswordTextField(
-                obscureText: false,
-                controller: _phoneController,
-                focusNode: FocusNode(),
-                autofocus: false,
-                hintText: '0(000)000000',
-              ),
-              const SizedBox(
-                height: 93,
-              ),
-              BlocListener<ConfirmPhoneBloc, ConfirmPhoneState>(
-                listener: (context, state) {
-                  if (state is ConfirmPhoneLoaded) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const VerificationScreen(),
-                      ),
-                    );
-                  } else if (state is ConfirmPhoneError) {
-                    Fluttertoast.showToast(
-                      msg: state.errorText,
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.TOP,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.red,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
-                  }
-                },
-                child: CommonElevatedButton(
-                  title: 'Далее',
-                  onPressed: () {
-                    BlocProvider.of<ConfirmPhoneBloc>(context).add(
-                      SendPhoneEvent(phone: _phoneController.text),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: buildBody(),
         ),
       ),
+    );
+  }
+
+  Widget buildBody() {
+    return Column(
+      children: [
+        const SizedBox(height: 32),
+        const ImageContainer(image: AppImages.lock),
+        const SizedBox(height: 32),
+        buildTitleText(),
+        const SizedBox(height: 32),
+        buildPhoneTextField(),
+        const SizedBox(height: 93),
+        buildBlocConsumer(),
+      ],
+    );
+  }
+
+  Text buildTitleText() {
+    return Text(
+      'Введите номер телефона',
+      style: AppFonts.s20w400.copyWith(color: AppColors.grey49),
+    );
+  }
+
+  PasswordTextField buildPhoneTextField() {
+    return PasswordTextField(
+      autofocus: true,
+      focusNode: FocusNode(),
+      obscureText: false,
+      controller: _phoneController,
+      hintText: '0(000)000000',
+    );
+  }
+
+  BlocConsumer<ConfirmPhoneBloc, ConfirmPhoneState> buildBlocConsumer() {
+    return BlocConsumer<ConfirmPhoneBloc, ConfirmPhoneState>(
+      listener: (context, state) {
+        if (state is ConfirmPhoneLoaded) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const VerificationScreen(),
+            ),
+          );
+        } else if (state is ConfirmPhoneError) {
+          Fluttertoast.showToast(
+            msg: state.errorText,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
+      },
+      builder: (context, state) {
+        bool isButtonActive = _phoneController.text.length >= 10;
+        return CommonElevatedButton(
+          title: 'Далее',
+          onPressed: isButtonActive
+            ? () {
+                BlocProvider.of<ConfirmPhoneBloc>(context).add(
+                  SendPhoneEvent(phone: _phoneController.text),
+                );
+              }
+            : null,
+        );
+      },
     );
   }
 }

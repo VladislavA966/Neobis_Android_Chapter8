@@ -36,13 +36,13 @@ class _BottomBarNavigationState extends State<BottomBarNavigation> {
       body: appScreens.elementAt(currentIndex),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: SizedBox(
-        width: 50,
-        height: 50,
+        width: 60,
+        height: 60,
         child: ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(), backgroundColor: AppColors.violet),
-            child: const Icon(Icons.add)),
+            child: const Icon(Icons.add, color: AppColors.white, size: 15,)),
       ),
       bottomNavigationBar: Builder(builder: (context) {
         return BottomNavigationBar(
