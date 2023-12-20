@@ -3,7 +3,7 @@ import 'package:neobis_android_chapter8/core/common_widgets/common_elevated_butt
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 import 'package:neobis_android_chapter8/core/recources/app_images.dart';
-import 'package:neobis_android_chapter8/features/add_user_data_screen/presentation/add_user_data_scree.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/add_user_data_scree.dart';
 import 'package:neobis_android_chapter8/features/confirm_phone_number/presentation/screens/confirm_phone_number.dart';
 import 'package:neobis_android_chapter8/features/favourite_items/presentation/favourite_items_list.dart';
 

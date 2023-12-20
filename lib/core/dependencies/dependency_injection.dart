@@ -1,8 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:neobis_android_chapter8/core/services/dio_settings.dart';
-import 'package:neobis_android_chapter8/features/add_user_data_screen/data/data_sources/add_user_data_data_source.dart';
-import 'package:neobis_android_chapter8/features/add_user_data_screen/data/repository_impl/add_user_data_repository_impl.dart';
-import 'package:neobis_android_chapter8/features/add_user_data_screen/domain/usecases/add_user_data_use_case.dart';
 import 'package:neobis_android_chapter8/features/confirm_phone_number/data/data_sources/remote_data_source.dart';
 import 'package:neobis_android_chapter8/features/confirm_phone_number/data/repository_impl/confirm_phone_repository_impl.dart';
 import 'package:neobis_android_chapter8/features/confirm_phone_number/domain/use_cases/confirm_phone_usecase.dart';
@@ -16,6 +13,9 @@ import 'package:neobis_android_chapter8/features/login/domain/usecases/login_use
 import 'package:neobis_android_chapter8/features/registration/data/data_source.dart/remote_data_source.dart';
 import 'package:neobis_android_chapter8/features/registration/data/repository_impl/registration_repository_impl.dart';
 import 'package:neobis_android_chapter8/features/registration/domain/usecases/registration_use_case.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/data/data_source/remote_data_source.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/data/repository_impl/user_info_repository_impl.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/domain/usecase/user_info_usecase.dart';
 
 final getIt = GetIt.instance;
 
@@ -24,6 +24,10 @@ void setupDependecies() {
   registrationDependencies();
   favouriteItemsDependencies();
   updateUserDataDependencies();
+  sendPhoneDependencies();
+}
+
+void sendPhoneDependencies() {
   getIt.registerSingleton<ConfirmPhoneRemoteDataSourceImpl>(
     ConfirmPhoneRemoteDataSourceImpl(dio: getIt<DioSettings>().dio),
   );
@@ -43,19 +47,19 @@ void setupDependecies() {
 }
 
 void updateUserDataDependencies() {
-  getIt.registerSingleton<AddUserDataDataSourceImpl>(
-    AddUserDataDataSourceImpl(
+  getIt.registerSingleton<UserInfoRemoteDataSourceImpl>(
+    UserInfoRemoteDataSourceImpl(
       dio: getIt<DioSettings>().dio,
     ),
   );
-  getIt.registerSingleton<AddUserDataRepositoryImpl>(
-    AddUserDataRepositoryImpl(
-      dataDataSource: getIt<AddUserDataDataSourceImpl>(),
+  getIt.registerSingleton<UserInfoRepositoryImpl>(
+    UserInfoRepositoryImpl(
+      dataSource: getIt<UserInfoRemoteDataSourceImpl>(),
     ),
   );
-  getIt.registerSingleton<AddUserDataUseCase>(
-    AddUserDataUseCase(
-      repository: getIt<AddUserDataRepositoryImpl>(),
+  getIt.registerSingleton<UserInfoUseCase>(
+    UserInfoUseCase(
+      repository: getIt<UserInfoRepositoryImpl>(),
     ),
   );
 }

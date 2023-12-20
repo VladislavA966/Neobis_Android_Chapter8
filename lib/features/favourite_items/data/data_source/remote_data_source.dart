@@ -11,7 +11,7 @@ class ItemsDataSoruceImpl implements ItemsDataSource {
   ItemsDataSoruceImpl({required this.dio});
   @override
   Future<ItemsModelList> getItems() async {
-    final responce = await dio.get('/api/procut/all');
+    final responce = await dio.get('/api/user/get-liked-products');
     if (responce.statusCode == 200) {
       return ItemsModelList.fromJson(responce.data);
     } else {
