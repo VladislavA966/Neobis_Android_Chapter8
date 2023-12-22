@@ -3,9 +3,10 @@ import 'package:neobis_android_chapter8/core/common_widgets/common_elevated_butt
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 import 'package:neobis_android_chapter8/core/recources/app_images.dart';
-import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/add_user_data_scree.dart';
 import 'package:neobis_android_chapter8/features/confirm_phone_number/presentation/screens/confirm_phone_number.dart';
-import 'package:neobis_android_chapter8/features/favourite_items/presentation/favourite_items_list.dart';
+import 'package:neobis_android_chapter8/features/favourite_items/presentation/screeens/favourite_items_list.dart';
+import 'package:neobis_android_chapter8/features/favourite_items/presentation/screeens/user_items.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/add_user_data_scree.dart';
 
 class UserProfileScrreen extends StatefulWidget {
   const UserProfileScrreen({super.key});
@@ -19,15 +20,26 @@ class _UserProfileScrreenState extends State<UserProfileScrreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.scaffoldBackgroundColor,
         title: Text(
           'Профиль',
           style: AppFonts.s18w400.copyWith(color: AppColors.grey49),
         ),
         actions: [
-          AppBarElevatedButton(
-            title: 'Изм.',
-            onPressed: () {},
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: AppBarElevatedButton(
+              title: 'Изм.',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddUserDataScreen(),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -50,7 +62,7 @@ class _UserProfileScrreenState extends State<UserProfileScrreen> {
                 'Алеся',
                 style: AppFonts.s18w400.copyWith(color: AppColors.grey49),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 24,
               ),
               UserProfileContainer(
@@ -66,13 +78,22 @@ class _UserProfileScrreenState extends State<UserProfileScrreen> {
                 image: AppImages.hearth,
               ),
               UserProfileContainer(
-                  onTap: () {}, image: AppImages.myCart, title: 'Мои товары'),
-              const SizedBox(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const UserItemsScreen(),
+                      ),
+                    );
+                  },
+                  image: AppImages.myCart,
+                  title: 'Мои товары'),
+              SizedBox(
                 height: 16,
               ),
               UserProfileContainer(
                   onTap: () {}, image: AppImages.exit, title: 'Выйти'),
-              const Spacer(),
+              Spacer(),
               CommonElevatedButton(
                 title: 'Закончить регистрацию',
                 onPressed: () {
@@ -84,7 +105,7 @@ class _UserProfileScrreenState extends State<UserProfileScrreen> {
                   );
                 },
               ),
-              const SizedBox(
+              SizedBox(
                 height: 24,
               ),
             ],

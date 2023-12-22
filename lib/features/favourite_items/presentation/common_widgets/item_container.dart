@@ -3,6 +3,9 @@ import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 
 class ItemContainer extends StatelessWidget {
+  final String name;
+  final String price;
+  final String likes;
   final Function() onTap;
   final Function() like;
   final bool isLiked;
@@ -11,6 +14,9 @@ class ItemContainer extends StatelessWidget {
     required this.onTap,
     required this.like,
     required this.isLiked,
+    required this.name,
+    required this.price,
+    required this.likes,
   });
 
   @override
@@ -35,11 +41,11 @@ class ItemContainer extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'BMW M4 Coupe: A Two-Door',
+                name,
                 style: AppFonts.s14w400.copyWith(color: AppColors.black),
               ),
               Text(
-                '23 000 \$',
+                '$price \$',
                 textAlign: TextAlign.start,
                 style: AppFonts.s14w400.copyWith(color: AppColors.violet),
               ),
@@ -53,7 +59,7 @@ class ItemContainer extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '100',
+                    likes,
                     style: AppFonts.s14w400.copyWith(color: AppColors.greyC1),
                   )
                 ],

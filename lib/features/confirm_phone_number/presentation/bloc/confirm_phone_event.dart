@@ -8,3 +8,10 @@ class SendPhoneEvent extends ConfirmPhoneEvent {
 
   SendPhoneEvent({required this.phone});
 }
+
+class SendCodeEvent extends ConfirmPhoneEvent {
+  final String phone;
+  final int code;
+
+  SendCodeEvent({required this.phone, required this.code});
+}

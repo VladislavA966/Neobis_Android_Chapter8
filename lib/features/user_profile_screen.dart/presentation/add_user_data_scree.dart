@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/bloc/user_info_bloc.dart';
 import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/user_profile_screen.dart';
 
 class AddUserDataScreen extends StatefulWidget {
@@ -11,6 +16,22 @@ class AddUserDataScreen extends StatefulWidget {
 }
 
 class _AddUserDataScreenState extends State<AddUserDataScreen> {
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      File imageFile = File(image.path);
+      BlocProvider.of<UserInfoBloc>(context).add(
+        ImagePickerEvent(image: imageFile),
+      );
+    }
+  }
+
+  final _nameController = TextEditingController();
+  final _surnameController = TextEditingController();
+  final _lastnameController = TextEditingController();
+  final _dateController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +47,25 @@ class _AddUserDataScreenState extends State<AddUserDataScreen> {
               children: [
                 AppBarElevatedButton(
                   title: 'Отмена',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
-                AppBarElevatedButton(
-                  title: 'Готово',
-                  onPressed: () {},
+                BlocListener<UserInfoBloc, UserInfoState>(
+                  listener: (context, state) {},
+                  child: AppBarElevatedButton(
+                    title: 'Готово',
+                    onPressed: () {
+                      BlocProvider.of<UserInfoBloc>(context).add(
+                        UpdateUserDataEvent(
+                          name: _nameController.text,
+                          surname: _surnameController.text,
+                          lastName: _lastnameController.text,
+                          birthDay: _dateController.text,
+                        ),
+                      );
+                    },
+                  ),
                 )
               ],
             ),
@@ -42,7 +77,9 @@ class _AddUserDataScreenState extends State<AddUserDataScreen> {
               backgroundColor: AppColors.violet,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                _pickImage();
+              },
               child: Text(
                 'Выбрать фотографию',
                 style: AppFonts.s16w400.copyWith(
@@ -54,21 +91,21 @@ class _AddUserDataScreenState extends State<AddUserDataScreen> {
               height: 30,
             ),
             AddUserDataTextField(
-              controller: TextEditingController(),
+              controller: _nameController,
               hintText: 'Имя',
               topLeftRadius: 12,
               topRightRadius: 12,
             ),
             AddUserDataTextField(
-              controller: TextEditingController(),
+              controller: _surnameController,
               hintText: 'Фамилия',
             ),
             AddUserDataTextField(
-              controller: TextEditingController(),
+              controller: _lastnameController,
               hintText: 'Имя пользователя',
             ),
             AddUserDataTextField(
-              controller: TextEditingController(),
+              controller: _dateController,
               hintText: 'Дата рождения',
               bottomLeftRadius: 12,
               bottomRightRadius: 12,
@@ -84,12 +121,12 @@ class _AddUserDataScreenState extends State<AddUserDataScreen> {
                     child: GestureDetector(
                       onTap: () {},
                       child: Text(
-                          'Добавить номер',
-                          style: AppFonts.s16w400.copyWith(color: AppColors.violet),
-                        ),
+                        'Добавить номер',
+                        style:
+                            AppFonts.s16w400.copyWith(color: AppColors.violet),
+                      ),
                     ),
                   ),
-                  
                   const Spacer(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

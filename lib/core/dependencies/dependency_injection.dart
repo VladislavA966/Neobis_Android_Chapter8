@@ -6,15 +6,19 @@ import 'package:neobis_android_chapter8/features/confirm_phone_number/domain/use
 import 'package:neobis_android_chapter8/features/favourite_items/data/data_source/remote_data_source.dart';
 import 'package:neobis_android_chapter8/features/favourite_items/data/repository_impl/items_repository_impl.dart';
 import 'package:neobis_android_chapter8/features/favourite_items/domain/usecase/items_use_case.dart';
-import 'package:neobis_android_chapter8/features/login/data/data_source/local_data_source.dart';
+import 'package:neobis_android_chapter8/core/data/local_data_source.dart/local_data_source.dart';
 import 'package:neobis_android_chapter8/features/login/data/data_source/remote_data_source.dart';
 import 'package:neobis_android_chapter8/features/login/data/repositories/login_repo_impl.dart';
 import 'package:neobis_android_chapter8/features/login/domain/usecases/login_usecase.dart';
 import 'package:neobis_android_chapter8/features/registration/data/data_source.dart/remote_data_source.dart';
 import 'package:neobis_android_chapter8/features/registration/data/repository_impl/registration_repository_impl.dart';
 import 'package:neobis_android_chapter8/features/registration/domain/usecases/registration_use_case.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/data/data_source/pick_image_remote_data_source.dart';
 import 'package:neobis_android_chapter8/features/user_profile_screen.dart/data/data_source/remote_data_source.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/data/repository_impl/pick_image_repository_impl.dart';
 import 'package:neobis_android_chapter8/features/user_profile_screen.dart/data/repository_impl/user_info_repository_impl.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/domain/repo/pick_image_repository.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/domain/usecase/pick_image_usecase.dart';
 import 'package:neobis_android_chapter8/features/user_profile_screen.dart/domain/usecase/user_info_usecase.dart';
 
 final getIt = GetIt.instance;
@@ -25,6 +29,25 @@ void setupDependecies() {
   favouriteItemsDependencies();
   updateUserDataDependencies();
   sendPhoneDependencies();
+  uploadImageDependencies();
+}
+
+void uploadImageDependencies() {
+  getIt.registerSingleton<ImageRemoteDataSourceImpl>(
+    ImageRemoteDataSourceImpl(
+      dio: getIt<DioSettings>().dio,
+    ),
+  );
+  getIt.registerSingleton<ImageRepositoryImpl>(
+    ImageRepositoryImpl(
+      remoteDataSource: getIt<ImageRemoteDataSourceImpl>(),
+    ),
+  );
+  getIt.registerSingleton<UploadImageUseCase>(
+    UploadImageUseCase(
+      getIt<ImageRepositoryImpl>(),
+    ),
+  );
 }
 
 void sendPhoneDependencies() {

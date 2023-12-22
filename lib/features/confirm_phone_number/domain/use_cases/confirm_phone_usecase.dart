@@ -4,7 +4,11 @@ class ConfirmPhoneUseCase {
   final ConfirmPhoneRepo repo;
 
   ConfirmPhoneUseCase({required this.repo});
-  Future<void> call(String username, String phone) async {
-    return await repo.getPinCode(username, phone);
+  Future<void> sendPhone(String username, String phone) async {
+    await repo.sendPhone(username, phone);
+  }
+
+  Future<void> sendCode(String username, String phone, int code) async {
+    await repo.sendCode(username, phone, code);
   }
 }

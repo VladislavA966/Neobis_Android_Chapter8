@@ -11,4 +11,6 @@ abstract class AppImages {
   static const String wallet = 'assets/images/wallet.png';
   static const String chat = 'assets/images/chat.png';
   static const String plus = 'assets/images/plus.png';
+  static const String artwork = 'assets/images/artwork.png';
+  static const String phone = 'assets/images/phone.png';
 }

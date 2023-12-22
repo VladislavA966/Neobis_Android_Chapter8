@@ -15,3 +15,9 @@ class UpdateUserDataEvent extends UserInfoEvent {
       required this.lastName,
       required this.birthDay});
 }
+
+class ImagePickerEvent extends UserInfoEvent {
+  final File image;
+
+  ImagePickerEvent({required this.image});
+}

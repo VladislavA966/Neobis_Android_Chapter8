@@ -14,10 +14,14 @@ class RemoteDataSourceRegistrationImpl implements RemoteDataSourceRegistration {
     String password,
     String login,
   ) async {
-    await dio.post('/api/auth/sign-up', data: {
-      "email": email,
-      "password": password,
-      "username": login,
-    });
+    await dio.post('/api/auth/sign-up',
+        options: Options(
+          extra: {"requiresToken": false},
+        ),
+        data: {
+          "email": email,
+          "password": password,
+          "username": login,
+        });
   }
 }

@@ -13,6 +13,12 @@ final class UserInfoLoaded extends UserInfoState {
   UserInfoLoaded({required this.userData});
 }
 
+final class PickImageLoaded extends UserInfoState {
+  final ImageEntity model;
+
+  PickImageLoaded({required this.model});
+}
+
 final class UserInfoError extends UserInfoState {
   final String errorText;
 

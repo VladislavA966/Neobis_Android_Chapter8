@@ -5,7 +5,15 @@ class ItemsUseCase {
   final ItemsRepo repository;
 
   ItemsUseCase({required this.repository});
-  Future<ItemList> call()  {
+  Future<ItemList> getAllProducts() {
     return repository.getAllProducts();
+  }
+
+  Future<ItemList> getLikedItems() {
+    return repository.getLikedItems();
+  }
+
+  Future<ItemList> getMyItems() {
+    return repository.getMyItems();
   }
 }

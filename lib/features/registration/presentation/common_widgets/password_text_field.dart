@@ -8,20 +8,22 @@ class PasswordTextField extends StatelessWidget {
   final FocusNode focusNode;
   final bool autofocus;
   final TextEditingController controller;
+  final Function(String)? onChanged;
 
-  const PasswordTextField({
-    super.key,
-    required this.obscureText,
-    required this.controller,
-    required this.focusNode,
-    required this.autofocus,
-    this.hintText,
-  });
+  const PasswordTextField(
+      {super.key,
+      required this.obscureText,
+      required this.controller,
+      required this.focusNode,
+      required this.autofocus,
+      this.hintText,
+      this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       style: AppFonts.s28w700.copyWith(color: AppColors.grey49),
+      onChanged: onChanged,
       controller: controller,
       focusNode: focusNode,
       autofocus: autofocus,

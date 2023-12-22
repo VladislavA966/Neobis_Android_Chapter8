@@ -5,6 +5,7 @@ import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 class CommonElevatedButton extends StatelessWidget {
   final String title;
   final Function()? onPressed;
+
   const CommonElevatedButton({
     super.key,
     required this.title,
@@ -24,12 +25,13 @@ class CommonElevatedButton extends StatelessWidget {
             ),
           ),
           disabledBackgroundColor: AppColors.grey,
-          backgroundColor: onPressed == null ? AppColors.grey : AppColors.violet,
+          backgroundColor:
+              onPressed == null ? AppColors.grey : AppColors.violet,
         ),
         onPressed: onPressed,
         child: Text(
           title,
-          style: AppFonts.s16w700.copyWith(color:AppColors.white),
+          style: AppFonts.s16w700.copyWith(color: AppColors.white),
         ),
       ),
     );

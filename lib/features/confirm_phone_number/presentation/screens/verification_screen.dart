@@ -1,15 +1,19 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:neobis_android_chapter8/core/common_widgets/common_elevated_button.dart';
 import 'package:neobis_android_chapter8/core/recources/app_colors.dart';
 import 'package:neobis_android_chapter8/core/recources/app_fonts.dart';
 import 'package:neobis_android_chapter8/core/recources/app_images.dart';
+import 'package:neobis_android_chapter8/features/confirm_phone_number/presentation/bloc/confirm_phone_bloc.dart';
 
 import 'package:neobis_android_chapter8/features/registration/presentation/common_widgets/password_text_field.dart';
 import 'package:neobis_android_chapter8/features/registration/presentation/screens/send_password_screen.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/add_user_data_scree.dart';
 
 class VerificationScreen extends StatefulWidget {
-  const VerificationScreen({Key? key}) : super(key: key);
+  final String phone;
+  const VerificationScreen({Key? key, required this.phone}) : super(key: key);
 
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
@@ -122,9 +126,30 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                CommonElevatedButton(
-                  title: 'Отправить код',
-                  onPressed: codeController.text.isEmpty ? null : () {},
+                BlocListener<ConfirmPhoneBloc, ConfirmPhoneState>(
+                  listener: (context, state) {
+                    if (state is ConfirmPhoneLoaded) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddUserDataScreen(),
+                        ),
+                      );
+                    }
+                  },
+                  child: CommonElevatedButton(
+                    title: 'Отправить код',
+                    onPressed: codeController.text.isEmpty
+                        ? null
+                        : () {
+                            BlocProvider.of<ConfirmPhoneBloc>(context).add(
+                              SendCodeEvent(
+                                phone: widget.phone,
+                                code: int.tryParse(codeController.text) ?? 0,
+                              ),
+                            );
+                          },
+                  ),
                 ),
               ],
             ),

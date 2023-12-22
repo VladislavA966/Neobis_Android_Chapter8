@@ -15,6 +15,7 @@ class UserInfoRemoteDataSourceImpl implements UserInfoRemoteDataSource {
       String name, String surname, String lastName, String birthDate) async {
     final responce = await dio.put(
       '/api/user',
+      options: Options(extra: {"requiresToken": true}),
       data: {
         "name": name,
         "surname": surname,

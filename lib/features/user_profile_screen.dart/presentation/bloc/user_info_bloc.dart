@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/domain/entities/image_entity.dart';
 import 'package:neobis_android_chapter8/features/user_profile_screen.dart/domain/entities/user_info_entity.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/domain/usecase/pick_image_usecase.dart';
 import 'package:neobis_android_chapter8/features/user_profile_screen.dart/domain/usecase/user_info_usecase.dart';
 
 part 'user_info_event.dart';
@@ -8,7 +13,8 @@ part 'user_info_state.dart';
 
 class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
   final UserInfoUseCase useCase;
-  UserInfoBloc(this.useCase) : super(UserInfoInitial()) {
+  final UploadImageUseCase imageUseCase;
+  UserInfoBloc(this.useCase, this.imageUseCase) : super(UserInfoInitial()) {
     on<UpdateUserDataEvent>((event, emit) async {
       emit(UserInfoLoading());
       try {
@@ -27,5 +33,22 @@ class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
         );
       }
     });
+    on<ImagePickerEvent>(
+      (event, emit) async {
+        emit(UserInfoLoading());
+        try {
+          final model = await imageUseCase.call(event.image);
+          emit(
+            PickImageLoaded(model: model),
+          );
+        } catch (e) {
+          emit(
+            UserInfoError(
+              errorText: e.toString(),
+            ),
+          );
+        }
+      },
+    );
   }
 }

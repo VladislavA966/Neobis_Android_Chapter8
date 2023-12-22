@@ -18,11 +18,11 @@ class ConfirmPhoneNumber extends StatefulWidget {
 }
 
 class _ConfirmPhoneNumberState extends State<ConfirmPhoneNumber> {
-  final _phoneController = TextEditingController();
+  final phoneController = TextEditingController();
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    phoneController.dispose();
     super.dispose();
   }
 
@@ -65,10 +65,14 @@ class _ConfirmPhoneNumberState extends State<ConfirmPhoneNumber> {
 
   PasswordTextField buildPhoneTextField() {
     return PasswordTextField(
+      onChanged: (value) {
+        value = phoneController.text;
+        setState(() {});
+      },
       autofocus: true,
       focusNode: FocusNode(),
       obscureText: false,
-      controller: _phoneController,
+      controller: phoneController,
       hintText: '0(000)000000',
     );
   }
@@ -80,7 +84,8 @@ class _ConfirmPhoneNumberState extends State<ConfirmPhoneNumber> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const VerificationScreen(),
+              builder: (context) =>
+                  VerificationScreen(phone: phoneController.text),
             ),
           );
         } else if (state is ConfirmPhoneError) {
@@ -88,7 +93,7 @@ class _ConfirmPhoneNumberState extends State<ConfirmPhoneNumber> {
             msg: state.errorText,
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
+            timeInSecForIosWeb: 3,
             backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0,
@@ -96,16 +101,16 @@ class _ConfirmPhoneNumberState extends State<ConfirmPhoneNumber> {
         }
       },
       builder: (context, state) {
-        bool isButtonActive = _phoneController.text.length >= 10;
+        bool isButtonActive = phoneController.text.length > 9;
         return CommonElevatedButton(
           title: 'Далее',
           onPressed: isButtonActive
-            ? () {
-                BlocProvider.of<ConfirmPhoneBloc>(context).add(
-                  SendPhoneEvent(phone: _phoneController.text),
-                );
-              }
-            : null,
+              ? () {
+                  BlocProvider.of<ConfirmPhoneBloc>(context).add(
+                    SendPhoneEvent(phone: phoneController.text),
+                  );
+                }
+              : null,
         );
       },
     );

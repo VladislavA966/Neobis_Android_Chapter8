@@ -1,3 +1,4 @@
 abstract class ConfirmPhoneRepo {
-  Future<void> getPinCode (String username, String phone);
+  Future<void> sendPhone(String username, String phone);
+  Future<void> sendCode(String username, String phone, int code);
 }

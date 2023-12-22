@@ -6,7 +6,12 @@ class ConfirmPhoneNumberImpl implements ConfirmPhoneRepo {
 
   ConfirmPhoneNumberImpl({required this.dataSource});
   @override
-  Future<void> getPinCode(String username, String phone) async {
-    await dataSource.getPinCode(username, phone);
+  Future<void> sendPhone(String username, String phone) async {
+    await dataSource.sendPhone(username, phone);
+  }
+
+  @override
+  Future<void> sendCode(String username, String phone, int code) async {
+    await dataSource.sendCode(username, phone, code);
   }
 }

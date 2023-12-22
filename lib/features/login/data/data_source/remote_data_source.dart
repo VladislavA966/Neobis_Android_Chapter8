@@ -12,6 +12,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<TokenModel> logIn(String login, String password) async {
     final responce = await dio.post('/api/auth/sign-in',
+        options: Options(extra: {"requiresToken": false}),
         data: {"username": login, "password": password});
     if (responce.statusCode == 200) {
       return TokenModel.fromJson(responce.data);
