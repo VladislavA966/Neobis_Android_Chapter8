@@ -7,175 +7,126 @@ import 'package:neobis_android_chapter8/features/confirm_phone_number/presentati
 import 'package:neobis_android_chapter8/features/favourite_items/presentation/screeens/favourite_items_list.dart';
 import 'package:neobis_android_chapter8/features/favourite_items/presentation/screeens/user_items.dart';
 import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/add_user_data_scree.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/common_widgets/app_bar_elevated_button.dart';
+import 'package:neobis_android_chapter8/features/user_profile_screen.dart/presentation/common_widgets/user_profile_container.dart';
 
-class UserProfileScrreen extends StatefulWidget {
-  const UserProfileScrreen({super.key});
+class UserProfileScreen extends StatefulWidget {
+  const UserProfileScreen({super.key});
 
   @override
-  State<UserProfileScrreen> createState() => _UserProfileScrreenState();
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _UserProfileScrreenState extends State<UserProfileScrreen> {
+class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColors.scaffoldBackgroundColor,
-        title: Text(
-          'Профиль',
-          style: AppFonts.s18w400.copyWith(color: AppColors.grey49),
+      appBar: _buildAppBar(),
+      body: _buildBody(),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: AppColors.scaffoldBackgroundColor,
+      title: Text('Профиль',
+          style: AppFonts.s18w400.copyWith(color: AppColors.grey49)),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: AppBarElevatedButton(
+            title: 'Изм.',
+            onPressed: () => _navigateToAddUserDataScreen(context),
+          ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: AppBarElevatedButton(
-              title: 'Изм.',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddUserDataScreen(),
-                  ),
-                );
-              },
+      ],
+    );
+  }
+
+  Center _buildBody() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const SizedBox(height: 4),
+            const CircleAvatar(radius: 50, backgroundColor: AppColors.violet),
+            const SizedBox(height: 12),
+            Text('Алеся',
+                style: AppFonts.s18w400.copyWith(color: AppColors.grey49)),
+            const SizedBox(height: 24),
+            _buildUserProfileContainer(
+              onTap: () => _navigateToFavouriteItemsScreen(context),
+              title: 'Понравившиеся',
+              image: AppImages.hearth,
             ),
-          ),
-        ],
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 4,
-              ),
-              const CircleAvatar(
-                radius: 50,
-                backgroundColor: AppColors.violet,
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Text(
-                'Алеся',
-                style: AppFonts.s18w400.copyWith(color: AppColors.grey49),
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              UserProfileContainer(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const FavoutiteItemsScreen(),
-                    ),
-                  );
-                },
-                title: 'Понравившиеся',
-                image: AppImages.hearth,
-              ),
-              UserProfileContainer(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const UserItemsScreen(),
-                      ),
-                    );
-                  },
-                  image: AppImages.myCart,
-                  title: 'Мои товары'),
-              SizedBox(
-                height: 16,
-              ),
-              UserProfileContainer(
-                  onTap: () {}, image: AppImages.exit, title: 'Выйти'),
-              Spacer(),
-              CommonElevatedButton(
-                title: 'Закончить регистрацию',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ConfirmPhoneNumber(),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(
-                height: 24,
-              ),
-            ],
-          ),
+            _buildUserProfileContainer(
+              onTap: () => _navigateToUserItemsScreen(context),
+              title: 'Мои товары',
+              image: AppImages.myCart,
+            ),
+            const SizedBox(height: 16),
+            _buildUserProfileContainer(
+              onTap: () {}, 
+              title: 'Выйти',
+              image: AppImages.exit,
+            ),
+            const Spacer(),
+            _buildCompleteRegistrationButton(context),
+            const SizedBox(height: 24),
+          ],
         ),
       ),
     );
   }
-}
 
-class AppBarElevatedButton extends StatelessWidget {
-  final String title;
-  final Function()? onPressed;
-  const AppBarElevatedButton({
-    super.key,
-    required this.title,
-    this.onPressed,
-  });
+  UserProfileContainer _buildUserProfileContainer(
+      {required VoidCallback onTap,
+      required String title,
+      required String image}) {
+    return UserProfileContainer(onTap: onTap, title: title, image: image);
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      child: Text(
-        title,
-        style: AppFonts.s16w400.copyWith(color: AppColors.grey49),
+  CommonElevatedButton _buildCompleteRegistrationButton(BuildContext context) {
+    return CommonElevatedButton(
+      title: 'Закончить регистрацию',
+      onPressed: () => _navigateToConfirmPhoneNumber(context),
+    );
+  }
+
+  void _navigateToAddUserDataScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AddUserDataScreen(),
       ),
     );
   }
-}
 
-class UserProfileContainer extends StatelessWidget {
-  final String image;
-  final String title;
-  final Function() onTap;
-  const UserProfileContainer({
-    super.key,
-    required this.image,
-    required this.title,
-    required this.onTap,
-  });
+  void _navigateToFavouriteItemsScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const FavouriteItemsScreen(),
+      ),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(
-            16,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Image.asset(image),
-              const SizedBox(
-                width: 9,
-              ),
-              Text(
-                title,
-                style: AppFonts.s16w400.copyWith(color: AppColors.black),
-              ),
-              const Spacer(),
-              const Icon(Icons.arrow_forward_ios),
-            ],
-          ),
-        ),
+  void _navigateToUserItemsScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const UserItemsScreen(),
+      ),
+    );
+  }
+
+  void _navigateToConfirmPhoneNumber(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ConfirmPhoneNumber(),
       ),
     );
   }

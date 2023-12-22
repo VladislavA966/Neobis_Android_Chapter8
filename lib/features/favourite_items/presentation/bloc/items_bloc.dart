@@ -11,48 +11,37 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
 
   ItemsBloc(this.useCase) : super(ItemsInitial()) {
     on<GetAllItemsEvent>(_onGetItemsEvent);
-    on<GetLikedItemsEvent>(
-      (event, emit) async {
-        try {
-          final model = await useCase.getLikedItems();
-          emit(ItemsLoaded(model: model));
-        } catch (e) {
-          emit(
-            ItemsError(
-              errorText: e.toString(),
-            ),
-          );
-        }
-      },
-    );
-    on<GetMyItemsEvent>(
-      (event, emit) async {
-        try {
-          final model = await useCase.getMyItems();
-          emit(ItemsLoaded(model: model));
-        } catch (e) {
-          emit(
-            ItemsError(
-              errorText: e.toString(),
-            ),
-          );
-        }
-      },
-    );
+    on<GetLikedItemsEvent>(_onGetLikedItemsEvent);
+    on<GetMyItemsEvent>(_onGetMyItemsEvent);
   }
 
-  Future<void> _onGetItemsEvent(
-      GetAllItemsEvent event, Emitter<ItemsState> emit) async {
+  Future<void> _onGetItemsEvent(GetAllItemsEvent event, Emitter<ItemsState> emit) async {
     emit(ItemsLoading());
     try {
       final model = await useCase.getAllProducts();
       emit(ItemsLoaded(model: model));
     } catch (e) {
-      emit(
-        ItemsError(
-          errorText: e.toString(),
-        ),
-      );
+      emit(ItemsError(errorText: e.toString()));
+    }
+  }
+
+  Future<void> _onGetLikedItemsEvent(GetLikedItemsEvent event, Emitter<ItemsState> emit) async {
+    emit(ItemsLoading());
+    try {
+      final model = await useCase.getLikedItems();
+      emit(ItemsLoaded(model: model));
+    } catch (e) {
+      emit(ItemsError(errorText: e.toString()));
+    }
+  }
+
+  Future<void> _onGetMyItemsEvent(GetMyItemsEvent event, Emitter<ItemsState> emit) async {
+    emit(ItemsLoading());
+    try {
+      final model = await useCase.getMyItems();
+      emit(ItemsLoaded(model: model));
+    } catch (e) {
+      emit(ItemsError(errorText: e.toString()));
     }
   }
 }

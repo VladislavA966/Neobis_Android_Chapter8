@@ -16,7 +16,7 @@ class _BottomBarNavigationState extends State<BottomBarNavigation> {
     AllItemsScreen(),
     Center(child: Text('Кошельки')),
     Center(child: Text('Чаты')),
-    UserProfileScrreen(),
+    UserProfileScreen(),
   ];
 
   int currentIndex = 3;

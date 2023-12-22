@@ -7,20 +7,25 @@ part 'registration_state.dart';
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   final RegistrationUseCase useCase;
   RegistrationBloc({required this.useCase}) : super(RegistrationInitial()) {
-    on<GetRegistrationEvent>((event, emit) async {
-      emit(RegistrationLoading());
-      try {
-        await useCase.call(event.userName, event.email, event.password);
-        emit(
-          RegistrationLoaded(),
-        );
-      } catch (e) {
-        emit(
-          RegistrationError(
-            errorText: e.toString(),
-          ),
-        );
-      }
-    });
+    on<GetRegistrationEvent>(_onGetRegistration);
+  }
+
+
+
+  
+  Future<void> _onGetRegistration(
+      GetRegistrationEvent event, Emitter<RegistrationState> emit) async {
+    try {
+      await useCase.call(event.userName, event.email, event.password);
+      emit(
+        RegistrationLoaded(),
+      );
+    } catch (e) {
+      emit(
+        RegistrationError(
+          errorText: e.toString(),
+        ),
+      );
+    }
   }
 }

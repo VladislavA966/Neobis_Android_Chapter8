@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
       ),
       BlocProvider<ConfirmPhoneBloc>(
         create: (context) => ConfirmPhoneBloc(
-          getIt<ConfirmPhoneUseCase>(),
-          getIt<LocalDataSource>(),
+          useCase: getIt<ConfirmPhoneUseCase>(),
+          localDataSource: getIt<LocalDataSource>(),
         ),
       ),
       BlocProvider<LogInBloc>(

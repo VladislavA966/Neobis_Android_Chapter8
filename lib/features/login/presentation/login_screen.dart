@@ -34,16 +34,22 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: SafeArea(
-            child: Column(
-              children: [
-                _buildLogo(),
-                _buildLoginFields(),
-                _buildFooter(),
-              ],
+      body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: SafeArea(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: [
+                    _buildLogo(),
+                    _buildLoginFields(),
+                    _buildFooter(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -141,22 +147,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildFooter() {
-    return Expanded(
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const RegistrationScreen(),
-              ),
-            );
-          },
-          child: Text(
-            'Зарегистрироваться',
-            style: AppFonts.s14w400.copyWith(color: AppColors.violet),
-          ),
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: TextButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const RegistrationScreen(),
+            ),
+          );
+        },
+        child: Text(
+          'Зарегистрироваться',
+          style: AppFonts.s14w400.copyWith(color: AppColors.violet),
         ),
       ),
     );

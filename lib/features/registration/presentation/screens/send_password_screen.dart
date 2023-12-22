@@ -85,27 +85,32 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 32,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  const ImageContainer(
+                    image: AppImages.lock,
+                  ),
+                  const SizedBox(
+                    height: 28,
+                  ),
+                  _buildText(),
+                  _buildValidationText(),
+                  _buildPasswordField(),
+                  _buildConfirmPasswordField(),
+                  const SizedBox(height: 49),
+                  _buildNextButton(),
+                ],
               ),
-              const ImageContainer(
-                image: AppImages.lock,
-              ),
-              const SizedBox(
-                height: 28,
-              ),
-              _buildText(),
-              _buildValidationText(),
-              _buildPasswordField(),
-              _buildConfirmPasswordField(),
-              const SizedBox(height: 49),
-              _buildNextButton(),
-            ],
+            ),
           ),
         ),
       ),

@@ -42,20 +42,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   Widget _buildBody() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          children: [
-            const SizedBox(height: 24),
-            _buildLogo(),
-            const SizedBox(height: 68),
-            _buildUsernameField(),
-            const SizedBox(height: 52),
-            _buildEmailField(),
-            const SizedBox(height: 46),
-            _buildRegisterButton(),
-          ],
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                const SizedBox(height: 24),
+                _buildLogo(),
+                const SizedBox(height: 68),
+                _buildUsernameField(),
+                const SizedBox(height: 52),
+                _buildEmailField(),
+                const SizedBox(height: 46),
+                _buildRegisterButton(),
+              ],
+            ),
+          ),
         ),
       ),
     );
